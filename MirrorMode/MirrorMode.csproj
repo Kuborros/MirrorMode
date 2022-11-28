@@ -25,10 +25,10 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Freedom Planet 2\FP2_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Rewired_Core">
-      <HintPath>..\..\..\..\Desktop\Test\FP2_Data\Managed\Rewired_Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Freedom Planet 2\FP2_Data\Managed\Rewired_Core.dll</HintPath>
     </Reference>
     <Reference Include="Rewired_Windows">
-      <HintPath>..\..\..\..\Desktop\Test\FP2_Data\Managed\Rewired_Windows.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Freedom Planet 2\FP2_Data\Managed\Rewired_Windows.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

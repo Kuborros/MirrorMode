@@ -18,6 +18,7 @@ namespace MirrorMode
 
             var harmony = new Harmony("com.kuborro.plugins.fp2.mirrormode");
             harmony.PatchAll(typeof(PatchMerchant));
+            harmony.PatchAll(typeof(PatchPowerupSprite));
 
             if (!configReverseControlls.Value)
             {
@@ -43,6 +44,21 @@ namespace MirrorMode
                         ___starCardRequirements = ___starCardRequirements.AddToArray(2);
                         ___musicID = ___musicID.AddToArray(FPMusicTrack.NONE);
                     }
+                }
+            }
+        }
+    }
+    class PatchPowerupSprite
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(FPHudDigit), "SetDigitValue", MethodType.Normal)]
+        static void PreFix(ref Sprite[] ___digitFrames)
+        {
+            if (___digitFrames != null && ___digitFrames.Length > 40)
+            {
+                if (___digitFrames[18] == null)
+                {
+                    ___digitFrames[18] = ___digitFrames[30];
                 }
             }
         }
