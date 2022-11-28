@@ -10,4 +10,4 @@ Item itself is prone to bugs and graphical issues, use at own risk.
 
 When removing the mod, the item will stay in your inventory. Its completely harmless, however does not fully function.  
 
-[![638401639b75a](https://user-images.githubusercontent.com/33236735/204221019-bcc25259-36f5-4017-bea7-eb1385c62c80.jpg)](https://gamebanana.com/)
+[![638401639b75a](https://user-images.githubusercontent.com/33236735/204221019-bcc25259-36f5-4017-bea7-eb1385c62c80.jpg)]([https://gamebanana.com/](https://gamebanana.com/mods/414321))
