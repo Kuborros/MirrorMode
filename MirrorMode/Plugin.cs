@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace MirrorMode
 {
-    [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+    [BepInPlugin("com.kuborro.plugins.fp2.mirrormode", "MirrorMode", "1.0.0")]
     [BepInProcess("FP2.exe")]
     public class Plugin : BaseUnityPlugin
     {
