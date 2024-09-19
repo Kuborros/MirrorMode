@@ -6,33 +6,56 @@ using UnityEngine;
 
 namespace MirrorMode
 {
-    [BepInPlugin("com.kuborro.plugins.fp2.mirrormode", "MirrorMode", "1.0.0")]
+    [BepInPlugin("com.kuborro.plugins.fp2.mirrormode", "MirrorMode", "1.1.0")]
     [BepInProcess("FP2.exe")]
     public class Plugin : BaseUnityPlugin
     {
-        public static ConfigEntry<bool> configReverseControlls;
+        public static ConfigEntry<bool> configReverseControls;
         private void Awake()
         {
 
-            configReverseControlls = Config.Bind("General", "Enabled", false, "Enable mirrored controlls");
+            configReverseControls = Config.Bind("General", "Enabled", false, "Enable mirrored controls");
 
             var harmony = new Harmony("com.kuborro.plugins.fp2.mirrormode");
             harmony.PatchAll(typeof(PatchMerchant));
             harmony.PatchAll(typeof(PatchPowerupSprite));
+            harmony.PatchAll(typeof(PatchCameraUpdate));
 
-            if (!configReverseControlls.Value)
+            if (!configReverseControls.Value)
             {
-                harmony.PatchAll(typeof(PatchControlls));
-                harmony.PatchAll(typeof(PatchControllsRewired));
+                harmony.PatchAll(typeof(PatchControls));
+                harmony.PatchAll(typeof(PatchControlsRewired));
             }
         }
+    }
+
+
+    class PatchCameraUpdate
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(FPCamera), "LateUpdate", MethodType.Normal)]
+        static void PatchCameraLateUpdate()
+        {
+            if (FPCamera.stageCamera.targetPlayer != null)
+            {
+                if (FPCamera.stageCamera.targetPlayer.IsPowerupActive(FPPowerup.MIRROR_LENS))
+                {
+                    GameObject gameObject = GameObject.Find("Pixel Art Target");
+                    if (gameObject.transform.localScale.x > 0f)
+                    {
+                        gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x * -1f, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+                    }
+                }
+            }
+        }
+
     }
 
     class PatchMerchant
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(FPHubNPC), "Start", MethodType.Normal)]
-        static void Postfix(string ___NPCName,ref FPPowerup[] ___itemsForSale, ref int[] ___itemCosts, ref int[] ___starCardRequirements, ref FPMusicTrack[] ___musicID)
+        static void PatchHubNPCStart(string ___NPCName,ref FPPowerup[] ___itemsForSale, ref int[] ___itemCosts, ref int[] ___starCardRequirements, ref FPMusicTrack[] ___musicID)
         {
             if (___NPCName == "Chloe")
             {
@@ -52,7 +75,7 @@ namespace MirrorMode
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(FPHudDigit), "SetDigitValue", MethodType.Normal)]
-        static void PreFix(ref Sprite[] ___digitFrames)
+        static void PatchSetDigitValue(ref Sprite[] ___digitFrames)
         {
             if (___digitFrames != null && ___digitFrames.Length > 40)
             {
@@ -63,7 +86,7 @@ namespace MirrorMode
             }
         }
     }
-    class PatchControlls
+    class PatchControls
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(FPPlayer), "ProcessInputControl", MethodType.Normal)]
@@ -168,10 +191,10 @@ namespace MirrorMode
         }
     }
 
-    class PatchControllsRewired
+    class PatchControlsRewired
     {
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(FPPlayer), nameof(FPPlayer.ProcessRewired), MethodType.Normal)]
+        [HarmonyPatch(typeof(FPPlayer), "ProcessRewired", MethodType.Normal)]
 
         static bool Prefix(FPPlayer __instance)
         {
